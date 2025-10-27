@@ -23,18 +23,24 @@ pipeline {
                 powershell 'terraform validate'
             }
         }
+stage('Plan Terraform') {
+    steps {
+        powershell '''
+        terraform plan -out=tfplan `
+            -var "region=us-east-1" `
+            -var "access_key=${env.AWS_ACCESS_KEY_ID}" `
+            -var "secret_key=${env.AWS_SECRET_ACCESS_KEY}" `
+            -var "ami_id=ami-0360c520857e3138f" `
+            -var "instance_type=t2.micro"
+        '''
+    }
+}
 
-        stage('Plan Terraform') {
-            steps {
-                powershell 'terraform plan -out=tfplan'
-            }
-        }
-
-        stage('Apply Terraform') {
-            steps {
-                powershell 'terraform apply -auto-approve tfplan'
-            }
-        }
+stage('Apply Terraform') {
+    steps {
+        powershell 'terraform apply -auto-approve tfplan'
+    }
+}
     }
 
     post {
