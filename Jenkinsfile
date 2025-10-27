@@ -14,25 +14,25 @@ pipeline {
 
         stage('Init Terraform') {
             steps {
-                sh 'terraform init'
+                powershell 'terraform init'
             }
         }
 
         stage('Validate Terraform') {
             steps {
-                sh 'terraform validate'
+                powershell 'terraform validate'
             }
         }
 
         stage('Plan Terraform') {
             steps {
-                sh 'terraform plan -out=tfplan'
+                powershell 'terraform plan -out=tfplan'
             }
         }
 
         stage('Apply Terraform') {
             steps {
-                sh 'terraform apply -auto-approve tfplan'
+                powershell 'terraform apply -auto-approve tfplan'
             }
         }
     }
